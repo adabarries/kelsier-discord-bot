@@ -1,0 +1,26 @@
+{
+  "name": "kelsier-discord-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "discord bot that tells you if kelsier is back in the fortnite shop or not.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adabarries/kelsier-discord-bot.git"
+  },
+  "author": "adabarries",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adabarries/kelsier-discord-bot/issues"
+  },
+  "homepage": "https://github.com/adabarries/kelsier-discord-bot#readme",
+  "dependencies": {
+    "@sapphire/framework": "^5.0.7",
+    "axios": "^1.6.7",
+    "discord.js": "^14.12.1",
+    "dotenv": "^16.4.4"
+  }
+}
