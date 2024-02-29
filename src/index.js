@@ -1,8 +1,7 @@
 import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
 import { config } from 'dotenv';
-import { fs } from 'node:fs';
-import { path } from 'node:path';
-import { axios } from 'axios';
+import fs from 'node:fs';
+import axios from 'axios';
 
 config();
 
@@ -16,40 +15,30 @@ const client = new Client({
 
 client.commands = new Collection();
 
-const foldersPath = path.join(__dirname, 'commands');
-const commandFolders = fs.readdirSync(foldersPath);
+const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
 
-for (const folder of commandFolders) {
-    const commandsPath = path.join(foldersPath, folder);
-    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-    for (const file of commandFiles) {
-        const filePath = path.join(commandsPath, file);
-        const command = require(filePath);
-        // Sets a new item in the Collection with the key as the command name and the value as the exported module
-        if ('data' in command && 'execute' in command) {
-            client.commands.set(command.data.name, command);
-        } else {
-            console.log(`[WARNING] the command at ${filePath} is missing a required "data" or "execute" property.`);
-        }
+for (const file of commandFiles) {
+    const command = await import(`./commands/${file}`); // Using dynamic import
+    if ('data' in command && 'execute' in command) {
+      client.commands.set(command.data.name, command);
+    } else {
+      console.log(`[WARNING] The command ${file} is missing a required "data" or "execute" property.`);
+    }
+}
+
+const eventFiles = fs.readdirSync('./events').filter((file) => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+    const event = await import(`./events/${file}`);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args));
+    } else {
+        client.on(event.name, (...args) => event.execute(...args));
     }
 }
 
 // Logs in using token.
 client.login(process.env.TOKEN);
-
-const readyClient = () => {
-    console.log('Client is ready. User tag: ' + client.user.tag);
-};
-
-// Run once when client is ready.
-client.once(Events.ClientReady, readyClient);
-
-// async function handleInteraction(interaction) {
-//     if (!interaction.isCommand()) return;
-//     if (interaction.commandName === 'choochoo') {
-//         await choochoo.execute(interaction);
-//     }
-// }
 
 // fortnite api call here
 const getFortniteItemShop = async () => {
@@ -62,7 +51,6 @@ const getFortniteItemShop = async () => {
     } catch (error) {
         console.log('Error.', error);
     }
-
 }
 
 // logic to determine if 'kelsier' in item shop
@@ -73,7 +61,7 @@ const isKelsierHere = (data, id) => {
       // command logic here perhaps
       console.log('ID present.');
     } else console.log('ID absent.');
-  }
+}
 
 // be sure to specify the EXACT thread
 // for reference. thread ID: 1054656000222822531 (actual. consider adding a test thread for your own server.)
@@ -86,29 +74,3 @@ const isKelsierHere = (data, id) => {
 // and does some really obnoxious pings when he is (we deserve this.)
 // other nonsense: tells you if a string is a valid homestuck troll/kid name
 // ???
-
-
-client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isChatInputCommand()) return;
-
-    const command = interaction.client.commands.get(interaction.commandName);
-
-    if (!command) {
-        console.error(`No command matching ${interaction.commandName} was found.`);
-        return;
-    }
-
-    try {
-        await command.execute(interaction);
-    } catch (error) {
-        console.error(error);
-        if (interaction.replied || interaction.deferred) {
-            await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true});
-        } else {
-            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-        }
-    }
-    console.log(interaction);
-});
-// client.on(Events.InteractionCreate, handleInteraction);
-

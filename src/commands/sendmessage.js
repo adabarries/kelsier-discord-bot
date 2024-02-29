@@ -1,0 +1,1 @@
+// to do: slash command for making kelsier say something stupid
