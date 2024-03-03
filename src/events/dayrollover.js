@@ -1,1 +1,0 @@
-// to do here: add logic for fortnite shop's daily change. look in the api to make sure there's not already something extra for this

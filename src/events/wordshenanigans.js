@@ -62,8 +62,8 @@ export default {
         if (message.author.bot) return;
 
         // ----- homestuck name goof. ----- //
-        const kidMatches = message.match(/(\b[A-Z]{4}\s[A-Z]{6,7})/gi);
-        const trollMatches = message.match(/(\b[A-Z]{6}\s[A-Z]{6})/gi);
+        const kidMatches = message.content.match(/(\b[A-Z]{4}\s[A-Z]{6,7})/gi);
+        const trollMatches = message.content.match(/(\b[A-Z]{6}\s[A-Z]{6})/gi);
 
         const canonKidNames = [ 
             'john egbert', 
@@ -111,6 +111,12 @@ export default {
             if (canonTrollNames.indexOf(trollMatches[0]) === -1) {
                 message.channel.send(`${trollMatches[0]} is a valid homestuck troll name.`);
             }
+        }
+
+        const channel = message.client.channels.cache.get('635935632190865480');
+        const thread = channel.threads.cache.get('1208862779876966400');
+        if (message.content.toLowerCase().includes('fortnite')) {
+            thread.send('Test complete.');
         }
     },
 };

@@ -21,6 +21,7 @@
     "@sapphire/framework": "^5.0.7",
     "axios": "^1.6.7",
     "discord.js": "^14.12.1",
-    "dotenv": "^16.4.4"
+    "dotenv": "^16.4.4",
+    "node-cron": "^3.0.3"
   }
 }
