@@ -1,29 +1,30 @@
 // to do here: add logic for fortnite shop's daily change. look in the api to make sure there's not already something extra for this
-import { Events } from "discord.js";
+import { EmbedBuilder } from "discord.js";
+import axios from 'axios';
 import cron from 'node-cron';
 
-// fortnite api call here
-const getFortniteItemShop = async () => {
-    const kelsier = 'CID_A_100_Athena_Commando_M_Downpour_KC39P';
-    try {
-        const response = await axios.get('https://fortniteapi.io/v2/shop?lang=en&includeRenderData=false&includeHiddenTabs=false'
-        , {headers:{ Authorization: process.env.KEY } });
+// // fortnite api call here
+// const getFortniteItemShop = async () => {
+//     const kelsier = 'CID_A_100_Athena_Commando_M_Downpour_KC39P';
+//     try {
+//         const response = await axios.get('https://fortniteapi.io/v2/shop?lang=en&includeRenderData=false&includeHiddenTabs=false'
+//         , {headers:{ Authorization: process.env.KEY } });
 
-        return isKelsierHere(response.data.shop, kelsier);
-    } catch (error) {
-        console.log('Error.', error);
-    }
-}
+//         return isKelsierHere(response.data.shop, kelsier);
+//     } catch (error) {
+//         console.log('Error.', error);
+//     }
+// }
 
 // logic to determine if 'kelsier' in item shop
 // if yes, fuckin blast it
 // if no, just say no with a sadface. (add variations?)
-const isKelsierHere = (data, id) => {
-    if (data.some(item => item.mainId === id)) {
-      // command logic here perhaps
-      console.log('ID present.');
-    } else console.log('ID absent.');
-}
+// const isKelsierHere = (data, id) => {
+//     if (data.some(item => item.mainId === id)) {
+//       // command logic here perhaps
+//       console.log('ID present.');
+//     } else console.log('ID absent.');
+// }
 
 // be sure to specify the EXACT thread
 // for reference. thread ID: 1054656000222822531 (actual. consider adding a test thread for your own server.)
@@ -43,3 +44,40 @@ const isKelsierHere = (data, id) => {
 //         } else return;
 //     },
 // };
+
+export default {
+    name: 'daily_fortnite',
+    once: false,
+    async execute (client) {
+        cron.schedule('0 5 0 * * *', async () => { // scheduled to run at 0:05:00 every day
+            console.log('running scheduled API call.');
+            const kelsier = 'CID_A_100_Athena_Commando_M_Downpour_KC39P';
+
+            // counts the number of days elapsed since start of count.
+            const daysPassed = () => { 
+                let today = new Date().getTime();
+                const previous = new Date('December 19, 2022 11:06:00');
+                return Math.ceil((today - previous) / 86400000);
+            };
+            try {
+                const response = await axios.get('https://fortniteapi.io/v2/shop?lang=en&includeRenderData=false&includeHiddenTabs=false', 
+                { headers:{ Authorization: process.env.KEY } });
+                let shop = response.data.shop;
+                if (shop.some(item => item.mainId === id)) {
+                    console.log('ID present');
+                    // embed for this here. be sure to @ members
+                } else {
+                    // embed for this here as well.
+                    console.log('ID absent.');
+                }
+                } 
+            catch (error) {
+                console.log('Error.', error);
+            }
+        }, {
+            scheduled: true,
+            timezone: 'Etc/UTC'
+        });
+
+    }
+}

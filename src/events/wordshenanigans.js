@@ -113,7 +113,7 @@ export default {
             }
         }
 
-        const channel = message.client.channels.cache.get('635935632190865480');
+        const channel = client.channels.cache.get('635935632190865480');
         const thread = channel.threads.cache.get('1208862779876966400');
         if (message.content.toLowerCase().includes('fortnite')) {
             thread.send('Test complete.');
