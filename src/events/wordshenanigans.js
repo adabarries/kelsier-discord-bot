@@ -7,7 +7,7 @@ import { Client } from "discord.js";
 // use includes() probably but you would need to find two substrings in a specific order....regex?
 
 
-export const matchName = (msg) => {
+const matchName = (msg) => {
     const kidMatches = msg.match(/(\b[A-Z]{4}\s[A-Z]{6,7})/gi);
     const canonKidNames = [ 
         'john egbert', 
@@ -51,7 +51,6 @@ export const matchName = (msg) => {
     if (kidMatches) {
         if (canonKidNames.indexOf(kidMatches[0].toLowerCase()) === -1) {
             console.log(`${kidMatches[0]} is a valid homestuck kid name.`);
-            return kidMatches[0]; // convert this to a message event later
         }
     } else if (trollMatches) {
         if (canonTrollNames.indexOf(trollMatches[0].toLowerCase()) === -1) {
@@ -60,3 +59,5 @@ export const matchName = (msg) => {
         }
     } else return;
 };
+
+const name = 'messageCreate';

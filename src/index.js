@@ -18,7 +18,7 @@ client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-    const command = await import(`./commands/${file}`); // Using dynamic import
+    const { default:command } = await import(`./commands/${file}`);
     if ('data' in command && 'execute' in command) {
       client.commands.set(command.data.name, command);
     } else {
@@ -29,7 +29,10 @@ for (const file of commandFiles) {
 const eventFiles = fs.readdirSync('./events').filter((file) => file.endsWith('.js'));
 
 for (const file of eventFiles) {
-    const event = await import(`./events/${file}`);
+    const event = await import(`./events/${file}`).then(
+        (module) => module.default || module,
+    );
+
     if (event.once) {
         client.once(event.name, (...args) => event.execute(...args));
     } else {
@@ -44,7 +47,7 @@ client.login(process.env.TOKEN);
 const getFortniteItemShop = async () => {
     const kelsier = 'CID_A_100_Athena_Commando_M_Downpour_KC39P';
     try {
-        const res = await axios.get('https://fortniteapi.io/v2/shop?lang=en&includeRenderData=false&includeHiddenTabs=false'
+        const response = await axios.get('https://fortniteapi.io/v2/shop?lang=en&includeRenderData=false&includeHiddenTabs=false'
         , {headers:{ Authorization: process.env.KEY } });
 
         return isKelsierHere(response.data.shop, kelsier);

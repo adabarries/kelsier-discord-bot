@@ -8,7 +8,7 @@ const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-  const command = await import(`./commands/${file}`); // Using dynamic import
+  const {default:command} = await import(`./commands/${file}`); 
   if ('data' in command && 'execute' in command) {
     commands.push(command.data.toJSON());
   } else {
@@ -16,8 +16,9 @@ for (const file of commandFiles) {
   }
 }
 
+
 // Construct and prepare an instance of the REST module
-const rest = new REST().setToken(process.env.TOKEN);
+const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 // and deploy your commands!
 (async () => {
