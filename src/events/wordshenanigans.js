@@ -112,11 +112,5 @@ export default {
                 message.channel.send(`${trollMatches[0]} is a valid homestuck troll name.`);
             }
         }
-
-        const channel = client.channels.cache.get('635935632190865480');
-        const thread = channel.threads.cache.get('1208862779876966400');
-        if (message.content.toLowerCase().includes('fortnite')) {
-            thread.send('Test complete.');
-        }
     },
 };

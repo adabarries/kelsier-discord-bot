@@ -1,5 +1,5 @@
 // to do here: add logic for fortnite shop's daily change. look in the api to make sure there's not already something extra for this
-import { EmbedBuilder } from "discord.js";
+import { AttachmentBuilder, EmbedBuilder } from "discord.js";
 import axios from 'axios';
 import cron from 'node-cron';
 
@@ -52,6 +52,8 @@ export default {
         cron.schedule('0 5 0 * * *', async () => { // scheduled to run at 0:05:00 every day
             console.log('running scheduled API call.');
             const kelsier = 'CID_A_100_Athena_Commando_M_Downpour_KC39P';
+            const channel = client.channels.cache.get('635935632190865480');
+            const thread = channel.threads.cache.get('1208862779876966400');
 
             // counts the number of days elapsed since start of count.
             const daysPassed = () => { 
@@ -63,16 +65,19 @@ export default {
                 const response = await axios.get('https://fortniteapi.io/v2/shop?lang=en&includeRenderData=false&includeHiddenTabs=false', 
                 { headers:{ Authorization: process.env.KEY } });
                 let shop = response.data.shop;
-                if (shop.some(item => item.mainId === id)) {
+                if (shop.some(item => item.mainId === kelsier)) {
                     console.log('ID present');
                     // embed for this here. be sure to @ members
                 } else {
-                    // embed for this here as well.
                     console.log('ID absent.');
+                    const embedSkinAbsent = new EmbedBuilder()
+                        .setColor('730600')
+                        .setTitle(`DAY ${daysPassed()}:`)
+                        .setDescription('No. <:crey:828406658526085120>')
                 }
                 } 
             catch (error) {
-                console.log('Error.', error);
+                console.log('Error in API call.', error);
             }
         }, {
             scheduled: true,
