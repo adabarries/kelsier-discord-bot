@@ -28,8 +28,8 @@ export default {
                 const embedSkinAbsent = new EmbedBuilder()
                     .setColor('730600')
                     .setTitle(`DAY ${daysPassed()}:`)
-                    .setDescription('No. <:crey:828406658526085120>')
-                thread.send({ embeds: [embedSkinAbsent] });
+                    .setDescription('**Nope.** <:crey:828406658526085120>')
+                thread.send({ content: `### DAY ${daysPassed()}: \n`, embeds: [embedSkinAbsent] });
                 interaction.reply({ content: 'Sent!', ephemeral: true });
             }
             } 
