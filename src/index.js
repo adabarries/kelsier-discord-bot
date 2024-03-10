@@ -1,13 +1,13 @@
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import { config } from 'dotenv';
 import fs from 'node:fs';
-import axios from 'axios';
 
 config();
 
 const client = new Client({ 
     intents: [
     GatewayIntentBits.Guilds, 
+    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent
     ]

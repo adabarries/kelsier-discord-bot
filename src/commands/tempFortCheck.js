@@ -1,4 +1,4 @@
-import { AttachmentBuilder, EmbedBuilder, SlashCommandBuilder } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import axios from 'axios';
 
 export default {
@@ -6,7 +6,8 @@ export default {
         .setName('fortnite')
         .setDescription('made to test fortnite api calls'),
     async execute(interaction) {
-        const kelsier = 'CID_A_100_Athena_Commando_M_Downpour_KC39P';
+        const kelsier = 'EID_ArmUpDance';
+        // const kelsier = 'CID_A_100_Athena_Commando_M_Downpour_KC39P'; // real kel
         const channel = interaction.client.channels.cache.get('635935632190865480');
         const thread = channel.threads.cache.get('1208862779876966400');
 
@@ -22,14 +23,19 @@ export default {
             let shop = response.data.shop;
             if (shop.some(item => item.mainId === kelsier)) {
                 console.log('ID present');
-                thread.send('this is the indicator for present id but no logic yet lol');
+                const embedSkinPresent = new EmbedBuilder()
+                    .setColor('Green')
+                    .setImage('https://i.imgur.com/8QtwCSc.gif')
+                    .setDescription('***YEAH BABEYYYYYY***');
+                await thread.send({ content: `# DAY ${daysPassed()}:`, embeds: [embedSkinPresent] });
+                await thread.send(`<@!55549207372640256> <@!480855402289037312> ***LETS GO LETS GO WAKE THE FUCK UP***`);
+                interaction.reply({ content: 'Sent!', ephemeral: true });
             } else {
                 console.log('ID absent.');
                 const embedSkinAbsent = new EmbedBuilder()
                     .setColor('730600')
-                    .setTitle(`DAY ${daysPassed()}:`)
-                    .setDescription('**Nope.** <:crey:828406658526085120>')
-                thread.send({ content: `### DAY ${daysPassed()}: \n`, embeds: [embedSkinAbsent] });
+                    .setDescription('**Nope.** <:crey:828406658526085120>');
+                thread.send({ content: `# DAY ${daysPassed()}:`, embeds: [embedSkinAbsent] });
                 interaction.reply({ content: 'Sent!', ephemeral: true });
             }
             } 
