@@ -1,114 +1,36 @@
 import { Events } from "discord.js";
-
-// const matchName = (msg) => {
-//     const kidMatches = msg.match(/(\b[A-Z]{4}\s[A-Z]{6,7})/gi);
-//     const canonKidNames = [ 
-//         'john egbert', 
-//         'jane crocker', 
-//         'dave strider', 
-//         'dirk strider',
-//         'jade harley',
-//         'rose lalonde',
-//         'jake english',
-//         'roxy lalonde'
-//     ];
-    
-//     const trollMatches = msg.match(/(\b[A-Z]{6}\s[A-Z]{6})/gi);
-//     const canonTrollNames = [
-//         'aradia megido',
-//         'tavros nitram',
-//         'sollux captor',
-//         'karkat vantas',
-//         'nepeta leijon',
-//         'kanaya maryam',
-//         'terezi pyrope',
-//         'vriska serket',
-//         'equius zahhak',
-//         'gamzee makara',
-//         'eridan ampora',
-//         'feferi peixes',
-//         'damara megido',
-//         'rufioh nitram',
-//         'mituna captor',
-//         'kankri vantas',
-//         'meulin leijon',
-//         'porrim maryam',
-//         'latula pyrope',
-//         'aranea serket',
-//         'horuss zahhak', 
-//         'kurloz makara',
-//         'cronus ampora',
-//         'meenah peixes'
-//     ]; // wow. consider housing these elsewhere.
-
-//     if (kidMatches) {
-//         if (canonKidNames.indexOf(kidMatches[0]) === -1) {
-//             console.log(`${kidMatches[0]} is a valid homestuck kid name.`);
-//             message.channel.send(`${kidMatches[0]} is a valid homestuck kid name.`);
-//         }
-//     } else if (trollMatches) {
-//         if (canonTrollNames.indexOf(trollMatches[0]) === -1) {
-//             console.log(`${trollMatches[0]} is a valid homestuck troll name.`);
-//             message.channel.send(`${trollMatches[0]} is a valid homestuck troll name.`);
-//         }
-//     } else return;
-// };
+import { stringstorage } from "src\storage\stringstorage.json";
+import { replies } from "src\storage\replies.json";
 
 export default {
     name: Events.MessageCreate,
     once: false,
     async execute(message) {
         const msg = message.content.toLowerCase();
+
+        // sable-chat and politics channels respectively. really don't want the bot kicking in if
+        // someone's talking about a family tragedy or something really dire lol
+        // const forbiddenChannels = ['528773521707630602', '684543154334072848']; // real
+        const forbiddenChannels = ['825208364966346762', '909036630948577300']; //test. shitpost and acnh
         if (message.author.bot) return;
+        if (forbiddenChannels.includes(message.channel.id)) return;
+        
+        // ----- reply shenanigans specifically to dunk on falc ----- //
+        if (message.author.id === '55111061807824896' && msg.startsWith('hmm')) {
+            let index = Math.floor(Math.random() * replies.falcReplies.length);
+            message.reply(replies.falcReplies[index]);
+        }
 
-        // ----- homestuck name goof. i learned regex for this ----- //
-        const kidMatches = message.content.match(/(\b[A-Z]{4}\s[A-Z]{6,7})/gi);
-        const trollMatches = message.content.match(/(\b[A-Z]{6}\s[A-Z]{6})/gi);
-
-        const canonKidNames = [ 
-            'john egbert', 
-            'jane crocker', 
-            'dave strider', 
-            'dirk strider',
-            'jade harley',
-            'rose lalonde',
-            'jake english',
-            'roxy lalonde'
-        ];
-
-        const canonTrollNames = [
-            'aradia megido',
-            'tavros nitram',
-            'sollux captor',
-            'karkat vantas',
-            'nepeta leijon',
-            'kanaya maryam',
-            'terezi pyrope',
-            'vriska serket',
-            'equius zahhak',
-            'gamzee makara',
-            'eridan ampora',
-            'feferi peixes',
-            'damara megido',
-            'rufioh nitram',
-            'mituna captor',
-            'kankri vantas',
-            'meulin leijon',
-            'porrim maryam',
-            'latula pyrope',
-            'aranea serket',
-            'horuss zahhak', 
-            'kurloz makara',
-            'cronus ampora',
-            'meenah peixes'
-        ]; // wow. consider housing these elsewhere.
+        // ----- homestuck name goof. i learned regex for this. ----- //
+        const kidMatches = msg.match(/(\b[A-Z]{4}\s[A-Z]{6,7})/gi);
+        const trollMatches = msg.match(/(\b[A-Z]{6}\s[A-Z]{6})/gi);
 
         if (kidMatches) {
-            if (canonKidNames.indexOf(kidMatches[0]) === -1) {
+            if (stringstorage.canonKidNames.indexOf(kidMatches[0]) === -1) {
                 message.channel.send(`${kidMatches[0]} is a valid homestuck kid name.`);
             }
         } else if (trollMatches) {
-            if (canonTrollNames.indexOf(trollMatches[0]) === -1) {
+            if (stringstorage.canonTrollNames.indexOf(trollMatches[0]) === -1) {
                 message.channel.send(`${trollMatches[0]} is a valid homestuck troll name.`);
             }
         }
