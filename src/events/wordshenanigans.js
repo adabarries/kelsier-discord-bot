@@ -61,7 +61,7 @@ export default {
         const msg = message.content.toLowerCase();
         if (message.author.bot) return;
 
-        // ----- homestuck name goof. ----- //
+        // ----- homestuck name goof. i learned regex for this ----- //
         const kidMatches = message.content.match(/(\b[A-Z]{4}\s[A-Z]{6,7})/gi);
         const trollMatches = message.content.match(/(\b[A-Z]{6}\s[A-Z]{6})/gi);
 

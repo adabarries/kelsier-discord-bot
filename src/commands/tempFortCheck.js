@@ -22,6 +22,7 @@ export default {
             { headers:{ Authorization: process.env.KEY } });
             let shop = response.data.shop;
             if (shop.some(item => item.mainId === kelsier)) {
+                // yes response. @-mentions multiple people (consider making this a role in the future?)
                 console.log('ID present');
                 const embedSkinPresent = new EmbedBuilder()
                     .setColor('Green')
@@ -31,6 +32,7 @@ export default {
                 await thread.send(`<@!55549207372640256> <@!480855402289037312> ***LETS GO LETS GO WAKE THE FUCK UP***`);
                 interaction.reply({ content: 'Sent!', ephemeral: true });
             } else {
+                // no response.
                 console.log('ID absent.');
                 const embedSkinAbsent = new EmbedBuilder()
                     .setColor('730600')
@@ -45,3 +47,12 @@ export default {
     }
 };
 // fortnite role: <@1051249902233063425>
+
+// to-do:
+// -make sure this works (pretty sure it does but test to confirm)
+// -consider writing actual tests for these later
+// -hook it up to your cron function
+// -add exceptions for sable channel and politics channel
+// -change variables to the actual ones present in sable server
+// -add listener to dunk on falc
+// -deploy 
