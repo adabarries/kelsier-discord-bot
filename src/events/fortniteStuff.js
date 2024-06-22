@@ -36,7 +36,7 @@ export default {
                     console.log('ID absent.');
                     const embedSkinAbsent = new EmbedBuilder()
                         .setColor('730600')
-                        .setDescription('**Nope.** <:crey:828406658526085120>');
+                        .setDescription('**Nope.** <:sadlybradley:531648924453306380>');
                     thread.send({ content: `# DAY ${daysPassed()}:`, embeds: [embedSkinAbsent] });
                 }
                 } 
