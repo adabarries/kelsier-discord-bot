@@ -31,7 +31,6 @@ export default {
                         .setDescription('***YEAH BABEYYYYYY***');
                     await thread.send({ content: `# DAY ${daysPassed()}:`, embeds: [embedSkinPresent] });
                     await thread.send(`<@!1051249902233063425> ***LETS GO LETS GO WAKE THE FUCK UP***`);
-                    interaction.reply({ content: 'Sent!', ephemeral: true });
                 } else {
                     // no response.
                     console.log('ID absent.');
@@ -39,7 +38,6 @@ export default {
                         .setColor('730600')
                         .setDescription('**Nope.** <:crey:828406658526085120>');
                     thread.send({ content: `# DAY ${daysPassed()}:`, embeds: [embedSkinAbsent] });
-                    interaction.reply({ content: 'Sent!', ephemeral: true });
                 }
                 } 
             catch (error) {
