@@ -37,7 +37,7 @@ export default {
                     console.log('ID absent.');
                     const embedSkinAbsent = new EmbedBuilder()
                         .setColor('730600')
-                        .setDescription('okay testing this now test test test');
+                        .setDescription('**Nope.** <:sadlybradley:531648924453306380>');
                     await thread.send({ content: `# DAY ${daysPassed()}:`, embeds: [embedSkinAbsent] });
                 }
                 } 
