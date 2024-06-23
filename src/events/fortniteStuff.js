@@ -1,9 +1,9 @@
-import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder, Events } from "discord.js";
 import axios from 'axios';
 import cron from 'node-cron';
 
 export default {
-    name: 'daily_fortnite',
+    name: Events.ClientReady,
     once: false,
     async execute (client) {
         cron.schedule('0 5 0 * * *', async () => { // scheduled to run at 0:05:00 every day
@@ -21,8 +21,9 @@ export default {
             try {
                 const response = await axios.get('https://fortniteapi.io/v2/shop?lang=en&includeRenderData=false&includeHiddenTabs=false', 
                 { headers:{ Authorization: process.env.KEY } });
-                let shop = response.data.shop;
-                if (shop.some(item => item.mainId === kelsier)) {
+                let dailyShop = response.data.shop;
+                console.log('Trying...');
+                if (dailyShop.some(item => item.mainId === kelsier)) {
                     // yes response. @-mentions fortnite role
                     console.log('ID present');
                     const embedSkinPresent = new EmbedBuilder()
@@ -36,8 +37,8 @@ export default {
                     console.log('ID absent.');
                     const embedSkinAbsent = new EmbedBuilder()
                         .setColor('730600')
-                        .setDescription('**Nope.** <:sadlybradley:531648924453306380>');
-                    thread.send({ content: `# DAY ${daysPassed()}:`, embeds: [embedSkinAbsent] });
+                        .setDescription('okay testing this now test test test');
+                    await thread.send({ content: `# DAY ${daysPassed()}:`, embeds: [embedSkinAbsent] });
                 }
                 } 
             catch (error) {
