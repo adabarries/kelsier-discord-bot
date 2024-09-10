@@ -31,7 +31,7 @@ export default {
                         .setImage('https://i.imgur.com/8QtwCSc.gif')
                         .setDescription('***YEAH BABEYYYYYY***');
                     await thread.send({ content: `# DAY ${daysPassed()}:`, embeds: [embedSkinPresent] });
-                    await thread.send(`<@!1051249902233063425> ***LETS GO LETS GO WAKE THE FUCK UP***`);
+                    await thread.send(`<@!1051249902233063425> ***LETS GO LETS GO WAKE UP IT'S HAPPENING***`);
                 } else {
                     // no response.
                     console.log('ID absent.');
@@ -51,3 +51,6 @@ export default {
 
     }
 }
+
+// to do: consider setting up a database to eventually make this server-nonspecific?
+// this would also make tweaking things directly from the server a little cleaner and a fun exercise!
