@@ -41,3 +41,4 @@ export default {
         // }
     },
 };
+// to-do: fix regex, homestuck goof REALLY needs a cooldown

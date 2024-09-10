@@ -42,9 +42,3 @@ for (const file of eventFiles) {
 
 // Logs in using token.
 client.login(process.env.TOKEN);
-
-// absolutely necessary commands:
-// PRIMARY USE CASE: tells you if kelsier is back in the fortnite shop or not, 
-// and does some really obnoxious pings when he is (we deserve this.)
-// other nonsense: tells you if a string is a valid homestuck troll/kid name
-// ???
